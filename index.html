@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>http-client-example</title>
+</head>
+
+<script>
+function send() {
+		let url = document.getElementById('url').value;
+		if (url) {
+			var requestOptions = {
+				headers: new Headers(),
+				redirect: 'follow'
+			};
+
+			let apiKey = document.getElementById('apiKey').value;
+			if (apiKey.length > 0)
+				requestOptions.headers.append('Authorization', btoa(apiKey));
+
+			let body = document.getElementById('body').value;
+			if (body.length > 0) {
+				requestOptions.headers.append('Content-Type', 'application/json');
+				requestOptions.method = 'POST';
+				requestOptions.body = body;
+			}
+
+			let responseOutput = document.getElementById('response');
+			fetch(url, requestOptions)
+				.then(response => response.text())
+				.then(function (result) {
+					responseOutput.value = JSON.stringify(JSON.parse(result), undefined, 2);
+				})
+				.catch(function (error) {
+					responseOutput.value = error;
+				});
+		}
+	}
+</script>
+
+<body>
+	<div>
+		<form>
+			<table>
+				<tr>
+					<td><b>API-Key:</b></td>
+					<td>
+						<input type="text" style="width: 60rem" id="apiKey">
+					</td>
+				</tr>
+				<tr>
+					<td><b>URL:</b></td>
+					<td>
+						<input type="text" style="width: 60rem" id="url">
+					</td>
+				</tr>
+				<tr>
+					<td><b>Body:</b></td>
+					<td>
+						<textarea id="body" style="width: 60rem; height: 10rem;" cols="30" rows="10"></textarea>
+					</td>
+				</tr>
+			</table>
+			<input type="button" onclick='send()' value="Send">
+			</form>
+
+		<h3>Response</h3>
+		<textarea id="response" style="width: 65rem; height: 10rem;" cols="30" rows="10"></textarea>
+	</div>
+</body>
+
+</html>
