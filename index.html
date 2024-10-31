@@ -21,6 +21,7 @@ function send() {
 			let body = document.getElementById('body').value;
 			if (body.length > 0) {
 				requestOptions.headers.append('Content-Type', 'application/json');
+				requestOptions.headers.append( 'Access-Control-Allow-Origin', '*' );
 				requestOptions.method = 'POST';
 				requestOptions.body = body;
 			}
